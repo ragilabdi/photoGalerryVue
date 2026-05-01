@@ -2,9 +2,10 @@
 import { ref } from 'vue'
 import GalleryView from './components/GalleryView.vue'
 import OrderForm from './components/OrderForm.vue'
+import SupportView from './components/SupportView.vue'
 import { selectedIds } from './store'
 
-const currentPage = ref<'gallery' | 'order'>('gallery')
+const currentPage = ref<'gallery' | 'order' | 'support'>('gallery')
 </script>
 
 <template>
@@ -28,12 +29,20 @@ const currentPage = ref<'gallery' | 'order'>('gallery')
           >
             🛒 Pesan Cetak
           </button>
+          <button 
+            class="btn"
+            :class="{ 'btn-gold': currentPage === 'support', 'btn-outline': currentPage !== 'support' }"
+            @click="currentPage = 'support'"
+          >
+            💖 Dukung
+          </button>
         </div>
       </div>
     </header>
     
-    <GalleryView v-if="currentPage === 'gallery'" />
-    <OrderForm v-if="currentPage === 'order'" />
+    <GalleryView />
+    <OrderForm v-if="currentPage === 'order'" @close="currentPage = 'gallery'" />
+    <SupportView v-if="currentPage === 'support'" @close="currentPage = 'gallery'" />
   </div>
 </template>
 

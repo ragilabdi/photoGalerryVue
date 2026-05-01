@@ -2,6 +2,10 @@
 import { computed, ref } from 'vue'
 import { selectedIds, selectedPhotos as selectedPhotosStore } from '../store'
 
+const emit = defineEmits(['close'])
+
+const closeModal = () => emit('close')
+
 interface ProductOption {
   id: string
   title: string
@@ -97,11 +101,15 @@ const goNext = () => {
 </script>
 
 <template>
-  <div class="order-container">
-    <div class="order-header">
-      <h2>Photo Printing</h2>
-      <p class="order-subtitle">Empat langkah mudah untuk cetak foto dengan produk pilihan.</p>
-    </div>
+  <div class="modal-overlay" @click.self="closeModal">
+    <div class="order-container">
+      <div class="modal-header">
+        <div>
+          <h2>Photo Printing</h2>
+          <p class="order-subtitle">Empat langkah mudah untuk cetak foto dengan produk pilihan.</p>
+        </div>
+        <button class="modal-close" type="button" @click="closeModal">✕</button>
+      </div>
 
     <div class="order-steps">
       <div
@@ -274,17 +282,55 @@ const goNext = () => {
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <style scoped>
-.order-container {
-  width: 100%;
-  max-width: 860px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 24px 80px rgba(28, 25, 23, 0.08);
-  overflow: hidden;
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(28,25,23,0.55);
+    backdrop-filter: blur(2px);
+  }
+
+  .order-container {
+    width: 100%;
+    max-width: 860px;
+    margin: 0;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem 2rem 0;
+}
+
+.modal-close {
+  border: none;
+  background: rgba(28,25,23,0.04);
+  color: var(--charcoal);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(28,25,23,0.12);
 }
 
 .order-header {
